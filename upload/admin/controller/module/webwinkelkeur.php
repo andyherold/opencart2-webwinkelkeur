@@ -57,6 +57,9 @@ class ControllerModuleWebwinkelkeur extends Controller {
 
         $data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'ssl');
 
+        $data['button_save'] = $this->language->get('button_save');
+        $data['button_cancel'] = $this->language->get('button_cancel');
+
         $data['stores'] = $stores;
 
         $data['view_stores'] = array(array(
