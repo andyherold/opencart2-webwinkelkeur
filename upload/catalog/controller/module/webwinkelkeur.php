@@ -37,7 +37,7 @@ class ControllerModuleWebwinkelkeur extends Controller {
             $this->template = 'default/template/module/webwinkelkeur.tpl';
         }
 
-        $this->render();
+        return $this->load->view($this->template, $this->data);
     }
 
     public function cron() {
