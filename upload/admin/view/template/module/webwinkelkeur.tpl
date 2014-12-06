@@ -1,207 +1,222 @@
 <?php echo $header; ?>
 <div id="content">
-  <div class="breadcrumb">
-    <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-    <?php echo $breadcrumb['separator']; ?><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
-    <?php } ?>
-  </div>
-  <?php if ($error_warning) { ?>
-  <?php foreach ($error_warning as $error_message): ?>
-  <div class="warning"><?php echo $error_message; ?></div>
-  <?php endforeach; ?>
-  <?php } ?>
-  <form action="" method="post" enctype="multipart/form-data" id="form" name="webwinkelkeur">
-    <div class="box">
-      <div class="heading">
-        <h1><img src="view/image/information.png" alt="" /> WebwinkelKeur</h1>
-        <div class="buttons"><a onclick="$('#form').submit();" class="button">Opslaan</a><a href="<?php echo $cancel; ?>" class="button">Annuleren</a></div>
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form" class="btn btn-primary"
+                data-toggle="tooltip" title="<?php echo $button_save; ?>" >
+          <i class="fa fa-save"></i>
+        </button>
+        <a href="<?php echo $cancel; ?>" class="btn btn-default"
+           data-toggle="tooltip" title="<?php echo $button_cancel; ?>">
+          <i class="fa fa-reply"></i>
+        </a>
       </div>
-      <div class="content" style="min-height:0;">
-        <table class="form">
-          <?php if($stores): ?>
-          <tr>
-            <td>Multi-store:</td>
-            <td>
-              <label>
-                <input type="radio" name="multistore" value="0" <?php if(!$multistore) echo "checked"; ?> onchange="document.forms.webwinkelkeur.submit();" />
-                Gebruik dezelfde instellingen voor elke winkel
-              </label><br />
-              <label>
-                <input type="radio" name="multistore" value="1" <?php if($multistore) echo "checked"; ?> onchange="document.forms.webwinkelkeur.submit();" />
-                Configureer de module voor elke winkel
-              </label>
-            </td>
-          </tr>
-          <?php endif; ?>
-          <?php foreach($view_stores as $store): ?>
-          <?php if($multistore): ?>
-        </table>
-      </div>
+      <h1>WebwinkelKeur</h1>
+      <ul class="breadcrumb">
+        <?php foreach ($breadcrumbs as $breadcrumb) : ?>
+        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+        <?php endforeach; ?>
+      </ul>
     </div>
-    <div class="box">
-      <div class="heading">
-        <h1><?php echo $store['name']; ?></h1>
-        <div class="buttons"><a onclick="$('#form').submit();" class="button">Opslaan</a><a href="<?php echo $cancel; ?>" class="button">Annuleren</a></div>
-      </div>
-      <div class="content">
-        <?php if($store['store_id']): ?>
-        <input type="hidden" name="store[<?php echo $store['store_id']; ?>][store_name]" value="<?php echo $store['name']; ?>" />
-        <?php endif; ?>
-        <table class="form">
+  </div>
+  <div class="container-fluid">
+    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal" id="form" name="webwinkelkeur">
+      <?php foreach($view_stores as $store): ?>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $store['name']; ?></h3>
+        </div>
+        <div class="panel-body">
+          <?php if($store['store_id']): ?>
+          <input type="hidden" name="store[<?php echo $store['store_id']; ?>][store_name]"
+                 value="<?php echo $store['name']; ?>" />
           <?php endif; ?>
-          <tr>
-            <td><span class="required">*</span> Webwinkel ID:</td>
-            <td><input type="text" name="<?php printf($store['field_name'], 'shop_id'); ?>" value="<?php echo $store['settings']['shop_id']; ?>" /></td>
-          </tr>
-          <tr>
-            <td><span class="required">*</span> API key:</td>
-            <td><input type="text" name="<?php printf($store['field_name'], 'api_key'); ?>" value="<?php echo $store['settings']['api_key']; ?>" /></td>
-          </tr>
-          <tr>
-            <td>Sidebar weergeven:</td>
-            <td>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'sidebar'); ?>" value="1" <?php if($store['settings']['sidebar']) echo "checked"; ?> />
+          <div class="form-group required">
+            <label class="col-sm-2 control-label">Webwinkel ID</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"
+                     name="<?php printf($store['field_name'], 'shop_id'); ?>"
+                     value="<?php echo $store['settings']['shop_id']; ?>" />
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label">API key</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"
+                     name="<?php printf($store['field_name'], 'api_key'); ?>"
+                     value="<?php echo $store['settings']['api_key']; ?>" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Sidebar weergeven</label>
+            <div class="col-sm-10">
+              <label class="radio-inline">
+                <input type="radio" value="1" <?php if($store['settings']['sidebar']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'sidebar'); ?>" >
                 Ja
               </label>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'sidebar'); ?>" value="0" <?php if(!$store['settings']['sidebar']) echo "checked"; ?> />
+              <label class="radio-inline">
+                <input type="radio" value="0" <?php if(!$store['settings']['sidebar']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'sidebar'); ?>" >
                 Nee
               </label>
-            </td>
-          </tr>
-          <tr>
-            <td>Sidebar positie:</td>
-            <td>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'sidebar_position'); ?>" value="left" <?php if($store['settings']['sidebar_position'] == 'left') echo "checked"; ?> />
-                Links
-              </label>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'sidebar_position'); ?>" value="right" <?php if($store['settings']['sidebar_position'] == 'right') echo "checked"; ?> />
-                Rechts
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Sidebar hoogte:<br/>
-              <span class="help">aantal pixels vanaf de bovenkant</span>
-            </td>
-            <td><input type="text" name="<?php printf($store['field_name'], 'sidebar_top'); ?>" size="2" value="<?php echo $store['settings']['sidebar_top']; ?>" /></td>
-          </tr>
-          <tr>
-            <td>
-              Uitnodiging versturen:<br />
-              <span class="help">alleen beschikbaar voor Plus-leden</span>
-            </td>
-            <td>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'invite'); ?>" value="1" <?php if($store['settings']['invite'] == 1) echo "checked"; ?> />
-                Ja, na elke bestelling
-              </label><br />
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'invite'); ?>" value="2" <?php if($store['settings']['invite'] == 2) echo "checked"; ?> />
-                Ja, alleen bij de eerste bestelling
-              </label><br />
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'invite'); ?>" value="0" <?php if(!$store['settings']['invite']) echo "checked"; ?> />
-                Nee, geen uitnodigingen versturen
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Wachttijd voor uitnodiging:<br/>
-              <span class="help">de uitnodiging wordt verstuurd nadat het opgegeven aantal dagen is verstreken</span>
-            </td>
-            <td><input type="text" name="<?php printf($store['field_name'], 'invite_delay'); ?>" size="2" value="<?php echo $store['settings']['invite_delay']; ?>" /></td>
-          </tr>
-          <tr>
-            <td>
-              Orderstatus voor uitnodiging:<br />
-              <span class="help">de uitnodiging wordt alleen verstuurd wanneer de bestelling de aangevinkte status heeft</span>
-            </td>
-            <td class="webwinkelkeur-order-statuses">
-              <?php foreach($order_statuses as $order_status): ?>
-              <label style="display:block;width:200px;overflow:hidden;float:left;">
-                <input type="checkbox" name="<?php printf($store['field_name'], 'order_statuses'); ?>[]" value="<?php echo $order_status['order_status_id']; ?>" <?php if(in_array($order_status['order_status_id'], $store['settings']['order_statuses'])) echo 'checked'; ?> />
-                <?php echo $order_status['name']; ?>
-              </label>
-              <?php endforeach; ?>
-              <div style="clear:both;"></div>
-            </td>
-          </tr>
-          <tr>
-            <td>Tooltip weergeven:</td>
-            <td>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'tooltip'); ?>" value="1" <?php if($store['settings']['tooltip']) echo "checked"; ?> />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Sidebar positie</label>
+            <div class="col-sm-10">
+              <select class="form-control"
+                      name="<?php printf($store['field_name'], 'sidebar_position'); ?>">
+                <option value="left"  <?php if($store['settings']['sidebar_position'] == 'left') echo "selected"; ?> >Links</option>
+                <option value="right" <?php if($store['settings']['sidebar_position'] == 'right') echo "selected"; ?> >Rechts</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">
+              <span data-toggle="tooltip"
+                    title="aantal pixels vanaf de bovenkant">
+                Sidebar hoogte
+              </span>
+            </label>
+            <div class="col-sm-10">
+              <input type="text" size="2" value="<?php echo $store['settings']['sidebar_top']; ?>" class="form-control"
+                     name="<?php printf($store['field_name'], 'sidebar_top'); ?>" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <span data-toggle="tooltip"
+                    title="alleen beschikbaar voor Plus-leden">
+                Uitnodiging versturen
+              </span>
+            </label>
+            <div class="col-sm-10">
+              <select class="form-control" name="<?php printf($store['field_name'], 'invite'); ?>">
+                <option value="1" <?php if($store['settings']['invite'] == 1) echo "selected"; ?> >Ja, na elke bestelling</option>
+                <option value="2" <?php if($store['settings']['invite'] == 2) echo "selected"; ?> >Ja, alleen bij de eerste bestelling</option>
+                <option value="0" <?php if($store['settings']['invite'] == 0) echo "selected"; ?> >Nee, geen uitnodigingen versturen</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <span data-toggle="tooltip"
+                    title="de uitnodiging wordt verstuurd nadat het opgegeven aantal dagen is verstreken">
+                Wachttijd voor uitnodiging
+              </span>
+            </label>
+            <div class="col-sm-10">
+              <input type="text" size="2" class="form-control"
+                     value="<?php echo $store['settings']['invite_delay']; ?>"
+                     name="<?php printf($store['field_name'], 'invite_delay'); ?>" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <span data-toggle="tooltip"
+                    title="de uitnodiging wordt alleen verstuurd wanneer de bestelling de aangevinkte status heeft" >
+                Orderstatus voor uitnodiging
+              </span>
+            </label>
+            <div class="col-sm-10">
+              <div class="well well-sm" style="height: 150px; overflow: auto;">
+                <?php foreach($order_statuses as $order_status): ?>
+                  <div class="checkbox webwinkelkeur-order-statuses">
+                    <label>
+                      <input type="checkbox" name="<?php printf($store['field_name'], 'order_statuses'); ?>[]"
+                             value="<?php echo $order_status['order_status_id']; ?>"
+                             <?php if(in_array($order_status['order_status_id'], $store['settings']['order_statuses'])) echo 'checked'; ?> />
+                        <?php echo $order_status['name']; ?>
+                    </label>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Tooltip weergeven</label>
+            <div class="col-sm-10">
+              <label class="radio-inline">
+                <input type="radio" value="1" <?php if($store['settings']['tooltip']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'tooltip'); ?>">
                 Ja
               </label>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'tooltip'); ?>" value="0" <?php if(!$store['settings']['tooltip']) echo "checked"; ?> />
+              <label class="radio-inline">
+                <input type="radio" value="0" <?php if(!$store['settings']['tooltip']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'tooltip'); ?>">
                 Nee
               </label>
-            </td>
-          </tr>
-          <tr>
-            <td>JavaScript-integratie:</td>
-            <td>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'javascript'); ?>" value="1" <?php if($store['settings']['javascript']) echo "checked"; ?> />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">JavaScript-integratie</label>
+            <div class="col-sm-10">
+              <label class="radio-inline">
+                <input type="radio" value="1" <?php if($store['settings']['javascript']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'javascript'); ?>">
                 Ja
               </label>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'javascript'); ?>" value="0" <?php if(!$store['settings']['javascript']) echo "checked"; ?> />
+              <label class="radio-inline">
+                <input type="radio" value="0" <?php if(!$store['settings']['javascript']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'javascript'); ?>">
                 Nee
               </label>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Rich snippet sterren:<br/>
-              <span class="help">Voeg een <a href="https://support.google.com/webmasters/answer/99170?hl=nl">rich snippet</a> toe aan de footer. Google kan uw waardering dan in de zoekresultaten tonen. Gebruik op eigen risico.</span>
-            </td>
-            <td>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'rich_snippet'); ?>" value="1" <?php if($store['settings']['rich_snippet']) echo "checked"; ?> />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <span data-toggle="tooltip"
+                    title="Voeg een <a href='https://support.google.com/webmasters/answer/99170?hl=nl'>rich snippet</a> toe aan de footer. Google kan uw waardering dan in de zoekresultaten tonen. Gebruik op eigen risico.">
+                Rich snippet sterren
+              </span>
+            </label>
+            <div class="col-sm-10">
+              <label class="radio-inline">
+                <input type="radio" value="1"
+                       <?php if($store['settings']['rich_snippet']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'rich_snippet'); ?>">
                 Ja
               </label>
-              <label>
-                <input type="radio" name="<?php printf($store['field_name'], 'rich_snippet'); ?>" value="0" <?php if(!$store['settings']['rich_snippet']) echo "checked"; ?> />
+              <label class="radio-inline">
+                <input type="radio" value="0"
+                       <?php if(!$store['settings']['rich_snippet']) echo "checked"; ?>
+                       name="<?php printf($store['field_name'], 'rich_snippet'); ?>">
                 Nee
               </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php endforeach; ?>
+    </form>
+    <?php if($invite_errors): ?>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-exclamation-triangle"></i>
+          Fouten opgetreden bij het versturen van uitnodigingen
+        </h3>
+      </div>
+      <div class="panel-body">
+        <table>
+          <?php foreach($invite_errors as $invite_error): ?>
+          <tr>
+            <td style="padding-right:10px;"><?php echo date('d-m-Y H:i', $invite_error['time']); ?></td>
+            <td>
+              <?php if($invite_error['response']): ?>
+              <?php echo htmlentities($invite_error['response'], ENT_QUOTES, 'UTF-8'); ?>
+              <?php else: ?>
+              De Webwinkelkeur-server kon niet worden bereikt.
+              <?php endif; ?>
             </td>
           </tr>
           <?php endforeach; ?>
         </table>
       </div>
     </div>
-  </form>
-  <?php if($invite_errors): ?>
-  <div class="box">
-    <div class="heading">
-      <h1><img src="view/image/warning.png" alt="" /> Fouten opgetreden bij het versturen van uitnodigingen</h1>
-    </div>
-    <div class="content">
-      <table>
-        <?php foreach($invite_errors as $invite_error): ?>
-        <tr>
-          <td style="padding-right:10px;"><?php echo date('d-m-Y H:i', $invite_error['time']); ?></td>
-          <td>
-            <?php if($invite_error['response']): ?>
-            <?php echo htmlentities($invite_error['response'], ENT_QUOTES, 'UTF-8'); ?>
-            <?php else: ?>
-            De Webwinkelkeur-server kon niet worden bereikt.
-            <?php endif; ?>
-          </td>
-        </tr>
-        <?php endforeach; ?>
-      </table>
-    </div>
+    <?php endif; ?>
   </div>
-  <?php endif; ?>
 </div>
 <script>
 jQuery(function($) {
