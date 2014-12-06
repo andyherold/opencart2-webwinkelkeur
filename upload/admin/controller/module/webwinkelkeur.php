@@ -17,16 +17,11 @@ class ControllerModuleWebwinkelkeur extends Controller {
 
         $stores = $this->model_module_webwinkelkeur->getStores();
 
-		if($this->request->server['REQUEST_METHOD'] == 'POST') {
-            $validated = $this->validateForm();
-
+        if($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validateForm()) {
             $new_settings = $this->cleanSettings($this->request->post);
             $this->editSettings($new_settings);
 
-            if(!$validated)
-                $settings = $this->getSettings();
-            else
-                $this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
+            $this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
         }
 
   		$data['breadcrumbs'] = array();
