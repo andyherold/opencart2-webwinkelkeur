@@ -38,6 +38,9 @@
               <input type="text" class="form-control"
                      name="<?php printf($store['field_name'], 'shop_id'); ?>"
                      value="<?php echo $store['settings']['shop_id']; ?>" />
+              <?php if($error_shopid): ?>
+                <div class="text-danger"><?php echo $error_shopid; ?></div>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group required">
@@ -46,6 +49,9 @@
               <input type="text" class="form-control"
                      name="<?php printf($store['field_name'], 'api_key'); ?>"
                      value="<?php echo $store['settings']['api_key']; ?>" />
+              <?php if($error_apikey): ?>
+                <div class="text-danger"><?php echo $error_apikey; ?></div>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group">
