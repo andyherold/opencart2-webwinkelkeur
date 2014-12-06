@@ -115,8 +115,13 @@ class ControllerModuleWebwinkelkeur extends Controller {
     }
 
     private function getSettings() {
-        $this->load->model('setting/setting');
-        $settings = $this->model_setting_setting->getSetting('webwinkelkeur');
+        $this->load->model('extension/module');
+
+        $settings = array();
+
+        if(isset($this->request->get['module_id']))
+            $settings = $this->model_extension_module->getModule($this->request->get['module_id']);
+
         return $this->defaultSettings($settings);
     }
 
@@ -169,8 +174,13 @@ class ControllerModuleWebwinkelkeur extends Controller {
     }
     
     private function editSettings(array $settings = array()) {
-        $this->load->model('setting/setting');
         $this->load->model('design/layout');
+
+        $this->load->model('extension/module');
+        if(!isset($this->request->get['module_id']))
+            $this->model_extension_module->addModule('webwinkelkeur', $settings);
+        else
+            $this->model_extension_module->editModule($this->request->get['module_id'], $settings);
 
         $settings = array_merge($settings, array(
             'webwinkelkeur_module' => array(),
@@ -187,7 +197,5 @@ class ControllerModuleWebwinkelkeur extends Controller {
                 'sort_order'    => 0,
             );
         }
-
-        $this->model_setting_setting->editSetting('webwinkelkeur', $settings);
     }
 }
