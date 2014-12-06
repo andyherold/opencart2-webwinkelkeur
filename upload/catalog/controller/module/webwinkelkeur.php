@@ -1,10 +1,8 @@
 <?php
 require_once DIR_SYSTEM . 'library/Peschar_Ping.php';
 class ControllerModuleWebwinkelkeur extends Controller {
-    public function index() {
+    public function index($settings) {
         $this->load->model('module/webwinkelkeur');
-
-        $settings = $this->model_module_webwinkelkeur->getSettings();
 
         $this->silence(array('Peschar_Ping', 'run'), 'WebwinkelKeur OpenCart', DIR_SYSTEM . '/..');
 
