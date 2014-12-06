@@ -44,10 +44,15 @@ class ControllerModuleWebwinkelkeur extends Controller {
 
     public function cron() {
         $this->load->model('module/webwinkelkeur');
+        $this->load->model('extension/module');
 
         ignore_user_abort(true);
 
-        $this->model_module_webwinkelkeur->sendInvites();
+        $modules = $this->model_module_webwinkelkeur->getModulesByCode('webwinkelkeur');
+        foreach($modules as $module) {
+            $settings = $this->model_extension_module->getModule($module['module_id']);
+            $this->model_module_webwinkelkeur->sendInvites($settings);
+        }
     }
 
     private function getRichSnippet($settings) {

@@ -1,6 +1,13 @@
 <?php
 require_once DIR_SYSTEM . 'library/Peschar_URLRetriever.php';
 class ModelModuleWebwinkelkeur extends Model {
+    public function getModulesByCode($code) {
+        $query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "module`
+                    WHERE `code` = '" . $this->db->escape($code) . "' ORDER BY `name`"
+        );
+        return $query->rows;
+    }
+
     private function getOrdersToInvite($settings) {
         $max_time = time() - 1800;
 
@@ -29,14 +36,13 @@ class ModelModuleWebwinkelkeur extends Model {
         return $query->rows;
     }
 
-    public function sendInvites() {
-        $settings = $this->getSettings();
+    public function sendInvites($settings) {
 
         if(empty($settings['shop_id']) ||
            empty($settings['api_key']) ||
            empty($settings['invite'])
         )
-            continue;
+            return;
 
         foreach($this->getOrdersToInvite($settings) as $order) {
             $this->db->query("
@@ -69,12 +75,5 @@ class ModelModuleWebwinkelkeur extends Model {
                 }
             }
         }
-    }
-
-    public function getSettings() {
-        $this->load->model('setting/setting');
-
-        $settings = $this->model_setting_setting->getSetting('webwinkelkeur');
-        return $settings;
     }
 }
