@@ -6,9 +6,6 @@ class ModelModuleWebwinkelkeur extends Model {
 
         $where = array();
 
-        if($this->getMultistore())
-            $where[] = 'store_id = ' . (int) $this->config->get('config_store_id');
-
         if(empty($settings['order_statuses']))
             $where[] = '0';
         else
@@ -78,23 +75,6 @@ class ModelModuleWebwinkelkeur extends Model {
         $this->load->model('setting/setting');
 
         $settings = $this->model_setting_setting->getSetting('webwinkelkeur');
-
-        if(!empty($settings['multistore'])
-           && ($store_id = $this->config->get('config_store_id'))
-        ) {
-            if(empty($settings['store'][$store_id]))
-                return array();
-            return $settings['store'][$store_id];
-        } else {
-            return $settings;
-        }
-    }
-
-    public function getMultistore() {
-        $this->load->model('setting/setting');
-
-        $settings = $this->getSetting('webwinkelkeur');
-
-        return !empty($settings['multistore']);
+        return $settings;
     }
 }

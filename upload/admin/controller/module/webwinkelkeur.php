@@ -21,18 +21,10 @@ class ControllerModuleWebwinkelkeur extends Controller {
             $validated = $this->validateForm();
 
             $new_settings = $this->cleanSettings($this->request->post);
-            $new_settings['multistore'] = !!$this->request->post['multistore'];
-
-            if($new_settings['multistore'])
-                foreach($stores as $store)
-                    $new_settings['store'][$store['store_id']] = isset($this->request->post['store'][$store['store_id']]) ? $this->cleanSettings($this->request->post['store'][$store['store_id']]) : $this->defaultSettings();
-
             $this->editSettings($new_settings);
 
             if(!$validated)
                 $settings = $this->getSettings();
-            elseif($new_settings['multistore'] != $settings['multistore'])
-                $this->response->redirect($this->url->link('module/webwinkelkeur', 'token=' . $this->session->data['token'], 'SSL'));
             else
                 $this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
         }
@@ -65,9 +57,6 @@ class ControllerModuleWebwinkelkeur extends Controller {
             'name'     => $this->config->get('config_name'),
         ));
 
-        if($settings['multistore'])
-            $data['view_stores'] = array_merge($data['view_stores'], $data['stores']);
-
         foreach($data['view_stores'] as &$store) {
             if($store['store_id'] && isset($settings['store'][$store['store_id']]))
                 $store['settings'] = $settings['store'][$store['store_id']];
@@ -82,8 +71,6 @@ class ControllerModuleWebwinkelkeur extends Controller {
 
         $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-        $data['multistore'] = $settings['multistore'];
-
         $data['invite_errors'] = $this->model_module_webwinkelkeur->getInviteErrors();
 
         $data['header'] = $this->load->controller('common/header') . $this->load->controller('common/column_left');
@@ -92,21 +79,8 @@ class ControllerModuleWebwinkelkeur extends Controller {
     }
 
     private function validateForm() {
-        if(!isset($this->request->post['multistore']))
-            $this->request->post['multistore'] = false;
-
-        if($this->request->post['multistore'])
-            $default = $this->config->get('config_name') . ': ';
-        else
-            $default = '';
-
         foreach($this->validateSettings($this->request->post) as $error)
             $this->data['error_warning'][] = $default . $error;
-
-        if($this->request->post['multistore'] && !empty($this->request->post['store']))
-            foreach($this->request->post['store'] as $store)
-                foreach($this->validateSettings($store) as $error)
-                    $this->data['error_warning'][] = $store['store_name'] . ': ' . $error;
 
         return empty($this->data['error_warning']);
     }
@@ -143,10 +117,7 @@ class ControllerModuleWebwinkelkeur extends Controller {
     private function getSettings() {
         $this->load->model('setting/setting');
         $settings = $this->model_setting_setting->getSetting('webwinkelkeur');
-        return array_merge(
-            array('multistore' => false),
-            $this->defaultSettings($settings)
-        );
+        return $this->defaultSettings($settings);
     }
 
     private function defaultSettings($data = array()) {
