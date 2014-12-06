@@ -139,6 +139,7 @@ class ControllerModuleWebwinkelkeur extends Controller {
             'javascript'       => true,
             'rich_snippet'     => false,
             'order_statuses'   => array(3, 5),
+            'status'           => true,
         ), $data);
     }
 
@@ -158,6 +159,7 @@ class ControllerModuleWebwinkelkeur extends Controller {
             'javascript'       => !!$data['javascript'],
             'rich_snippet'     => !!$data['rich_snippet'],
             'order_statuses'   => empty($data['order_statuses']) ? array() : $this->cleanIntegerArray($data['order_statuses']),
+            'status'           => !!$data['status'],
         );
     }
 
@@ -193,7 +195,6 @@ class ControllerModuleWebwinkelkeur extends Controller {
             $settings['webwinkelkeur_module'][] = array(
                 'layout_id'     => $layout['layout_id'],
                 'position'      => 'content_bottom',
-                'status'        => 1,
                 'sort_order'    => 0,
             );
         }
