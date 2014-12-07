@@ -53,6 +53,22 @@
           <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $store['name']; ?></h3>
         </div>
         <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Status</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="status">
+                <option value="1" <?php if($store['settings']['status']) echo "selected"; ?> >Enabled</option>
+                <option value="0" <?php if(!$store['settings']['status']) echo "selected"; ?> >Disabled</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="name"
+                     value="<?php echo $store['settings']['name'] ?>" />
+            </div>
+          </div>
           <?php if($store['store_id']): ?>
           <input type="hidden" name="store[<?php echo $store['store_id']; ?>][store_name]"
                  value="<?php echo $store['name']; ?>" />
