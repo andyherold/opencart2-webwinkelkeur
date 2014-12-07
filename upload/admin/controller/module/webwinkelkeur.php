@@ -21,6 +21,10 @@ class ControllerModuleWebwinkelkeur extends Controller {
 
         if($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validateForm()) {
             $new_settings = $this->cleanSettings($this->request->post);
+
+            if(empty($new_settings['name']))
+                $new_settings['name'] = $stores[0]['name'];
+
             if($new_settings['status'] == true)
                 $this->editSettings($new_settings);
 
