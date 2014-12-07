@@ -22,6 +22,7 @@
   </div>
   <div class="container-fluid">
     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal" id="form" name="webwinkelkeur">
+      <?php if(!isset($module_id)): ?>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title"><i class="fa fa-pencil"></i>Edit WebwinkelKeur Module</h3>
@@ -45,6 +46,7 @@
           </div>
         </div>
       </div>
+      <?php else: ?>
       <?php foreach($view_stores as $store): ?>
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -219,6 +221,7 @@
         </div>
       </div>
       <?php endforeach; ?>
+      <?php endif; ?>
     </form>
     <?php if($invite_errors): ?>
     <div class="panel panel-default">

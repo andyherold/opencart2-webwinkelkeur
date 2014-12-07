@@ -60,6 +60,9 @@ class ControllerModuleWebwinkelkeur extends Controller {
         $data['button_save'] = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
 
+        if(isset($this->request->get['module_id']))
+            $data['module_id'] = $this->request->get['module_id'];
+
         $data['stores'] = $stores;
 
         $data['view_stores'] = array(array(
