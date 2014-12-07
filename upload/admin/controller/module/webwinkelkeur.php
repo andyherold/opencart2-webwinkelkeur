@@ -155,6 +155,7 @@ class ControllerModuleWebwinkelkeur extends Controller {
         return array(
             'shop_id'          => trim($data['shop_id']),
             'api_key'          => trim($data['api_key']),
+            'name'             => trim($data['name']),
             'sidebar'          => !!$data['sidebar'],
             'sidebar_position' => $data['sidebar_position'],
             'sidebar_top'      => $data['sidebar_top'],

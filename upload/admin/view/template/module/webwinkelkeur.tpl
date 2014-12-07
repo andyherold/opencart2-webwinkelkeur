@@ -22,6 +22,29 @@
   </div>
   <div class="container-fluid">
     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal" id="form" name="webwinkelkeur">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i>Edit WebwinkelKeur Module</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Store</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="name"
+                     placeholder="<?php echo $stores[0]['name'] ?>" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Status</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="status">
+                <option value="1">Enabled</option>
+                <option value="0" selected>Disabled</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
       <?php foreach($view_stores as $store): ?>
       <div class="panel panel-default">
         <div class="panel-heading">
