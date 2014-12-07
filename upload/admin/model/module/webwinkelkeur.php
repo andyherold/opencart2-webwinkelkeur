@@ -78,10 +78,10 @@ class ModelModuleWebwinkelkeur extends Model {
     public function getStores() {
         $query = $this->db->query("
             SELECT
-                store_id,
-                name
-            FROM `" . DB_PREFIX . "store`
-            ORDER BY store_id
+                store_id, value as name
+            FROM
+                `". DB_PREFIX . "setting`
+            WHERE `key` = 'config_name'
         ");
         return $query->rows;
     }
