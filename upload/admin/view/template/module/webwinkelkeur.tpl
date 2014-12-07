@@ -31,8 +31,16 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Store</label>
             <div class="col-sm-10">
+            <?php if(count($stores) > 1): ?>
+              <select class="form-control" name="name">
+              <?php foreach($stores as $store): ?>
+                <option value="<?php echo $store['name'] ?>"><?php echo $store['name'] ?></option>
+              <?php endforeach; ?>
+              </select>
+            <?php else: ?>
               <input type="text" class="form-control" name="name"
                      placeholder="<?php echo $stores[0]['name'] ?>" />
+            <?php endif; ?>
             </div>
           </div>
           <div class="form-group">
